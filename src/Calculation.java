@@ -5,9 +5,9 @@ public class Calculation {
     public static void main(String[] args) {
 
         //ВХОДНЫЕ ПАРАМЕТРЫ
-        int attackBonus = 3;
-        int dex = 1;
-        int armorPenetration = 2;
+        int attackBonus = 4;
+        int dodgeBonus = 2;
+        int armorPenetration = 0;
 
         List<Armor> armorList = new ArrayList<>();
         armorList.add(new Armor("Без брони", 10, 0));
@@ -24,8 +24,8 @@ public class Calculation {
 
 
         for (Armor armor : armorList) {
-            double dodgeChance = calculateDodgeChance(attackBonus, armor.getMovementDice(), dex);
-            double dodgeChanceWithShield = calculateDodgeChanceWithShield(attackBonus, armor.getMovementDice(), dex);
+            double dodgeChance = calculateDodgeChance(attackBonus, armor.getMovementDice(), dodgeBonus);
+            double dodgeChanceWithShield = calculateDodgeChanceWithShield(attackBonus, armor.getMovementDice(), dodgeBonus);
             double blockChance = calculateBlockChance(armor.getArmor(), armorPenetration);
             double blockChanceWithShield = calculateBlockChanceWithShield(armor.getArmor(), armorPenetration);
 
@@ -60,14 +60,14 @@ public class Calculation {
         return dodgeChance;
     }
 
-    public static double calculateDodgeChanceWithShield(int attackBonus, int movementDice, int dex) {
+    public static double calculateDodgeChanceWithShield(int attackBonus, int movementDice, int dodgeBonus) {
         double dodgeChanceWithShield = 0;
 
-        if (movementDice + dex + 2 >= attackBonus + 1) {
+        if (movementDice + dodgeBonus + 2 >= attackBonus + 1) {
             for (int movementDiceValue = 1; movementDiceValue <= movementDice; movementDiceValue++) {
                 int dodgeWithShieldSuccessCount = 0;
                 for (int attValue = 1; attValue < 11; attValue++) {
-                    if (attValue + attackBonus < movementDiceValue + dex + 2)
+                    if (attValue + attackBonus < movementDiceValue + dodgeBonus + 2)
                         dodgeWithShieldSuccessCount++;
                 }
 
